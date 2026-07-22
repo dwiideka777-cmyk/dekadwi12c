@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Klik Cepat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .info {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    #clickBtn {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 18px 28px;
+      font-size: 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    #clickBtn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    #startBtn {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .result {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Game Klik Cepat</h1>
+    <p>Klik tombol merah sebanyak mungkin dalam 15 detik!</p>
+
+    <div class="info">Waktu: <span id="time">15</span> detik</div>
+    <div class="info">Skor: <span id="score">0</span></div>
+
+    <button id="clickBtn" disabled>KLIK SAYA!</button>
+    <button id="startBtn">Mulai Game</button>
+
+    <div class="result" id="result"></div>
+    <div class="small">Dibuat dengan GitHub Pages</div>
+  </div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 15;
+    let timer;
+    let playing = false;
+
+    const timeEl = document.getElementById("time");
+    const scoreEl = document.getElementById("score");
+    const clickBtn = document.getElementById("clickBtn");
+    const startBtn = document.getElementById("startBtn");
+    const resultEl = document.getElementById("result");
+
+    startBtn.addEventListener("click", startGame);
+    clickBtn.addEventListener("click", function () {
+      if (playing) {
+        score++;
+        scoreEl.textContent = score;
+      }
+    });
+
+    function startGame() {
+      score = 0;
+      timeLeft = 15;
+      playing = true;
+
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+      resultEl.textContent = "";
+      clickBtn.disabled = false;
+      startBtn.disabled = true;
+      startBtn.textContent = "Game Berjalan...";
+
+      timer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      playing = false;
+      clickBtn.disabled = true;
+      startBtn.disabled = false;
+      startBtn.textContent = "Main Lagi";
+
+      let message = "";
+      if (score < 20) {
+        message = "Lumayan! Coba lebih cepat lagi 😄";
+      } else if (score < 40) {
+        message = "Hebat! Jari kamu cepat 🔥";
+      } else {
+        message = "Luar biasa! Kamu pro! 🚀";
+      }
+
+      resultEl.textContent = `Waktu habis! Skor akhir kamu: ${score}. ${message}`;
+    }
+  </script>
+</body>
+</html>
